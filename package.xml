@@ -3,12 +3,13 @@
 <package format="3">
   <name>mbari_wec_template_py</name>
   <version>0.0.0</version>
-  <description>Power Buoy Controller Template (python)</description>
+  <description>MBARI Power Buoy Controller Template (python)</description>
   <maintainer email="anderson@mbari.org">Michael Anderson</maintainer>
   <license>Apache 2.0</license>
 
   <depend>buoy_interfaces</depend>
   <depend>rclpy</depend>
+  <depend>buoy_api_py</depend>
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>

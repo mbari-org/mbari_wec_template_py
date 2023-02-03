@@ -17,7 +17,7 @@ and rename two files/folders
 - the empty file resource/mbari_wec_template_py
 - the python package `mbari_wec_template_py` containing `controller.py`
 
-Modify `setup.py` as desired and add any rosdep dependencies in `package.xml`.
+Modify `setup.py` as desired and add any dependencies in `package.xml`.
 
 ## Implement Controller
 Assuming you have followed the above and renamed the python package `mbari_wec_template_py` to your package name,
@@ -28,5 +28,15 @@ If you modify the controller node name, i.e. `super().__init__('controller')` an
 please be sure to update the first line of the `config/controller.yaml` file and to use the same node name.
 
 Also, if you choose a more specific name for your controller,
-consider renaming `launch/controller.launch.py` as well as `config/controller.yaml`
-and update the `console_scripts` in `setup.py` and the `executable` field of `Node` in `launch/controller.launch.py` accordingly.
+consider renaming:
+
+- `launch/controller.launch.py`
+- `config/controller.yaml`
+- `<your_package_name>/controller.py`
+
+and update:
+
+- `console_scripts` in `setup.py`
+- `executable` field of `Node` in `launch/controller.launch.py`
+
+accordingly.
