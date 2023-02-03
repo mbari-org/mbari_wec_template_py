@@ -1,6 +1,9 @@
 # mbari_wec_template_py
 Python template repo for external ROS2-enabled controller for MBARI's wave energy conversion buoy (sim or physical).
 
+Please see [buoy_msgs/buoy_api_py](https://github.com/osrf/buoy_msgs/tree/main/buoy_api_py)
+for controller [examples](https://github.com/osrf/buoy_msgs/tree/main/buoy_api_py/buoy_api/examples)
+
 ## Modify template for your package
 Replace `mbari_wec_template_py` with your package name in
 
