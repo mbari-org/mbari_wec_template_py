@@ -147,4 +147,4 @@ You may also send commands from within the `Controller` class:
 ## Example
 
 (Coming Soon) An example using this interface in the tutorial:
-[Linear Damper Example (Python)](PythonLinearDamperExample.md)
+[Linear Damper Example (Python)](https://osrf.github.io/buoy_entrypoint/Tutorials/ROS2/PythonLinearDamperExample.md)
