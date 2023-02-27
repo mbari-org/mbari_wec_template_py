@@ -2,7 +2,7 @@
 Python template repo for external ROS2-enabled controller for MBARI's wave energy conversion buoy (sim or physical).
 Please see [buoy_entrypoint](https://github.com/osrf/buoy_entrypoint) and associated
 [documentation](https://osrf.github.io/buoy_entrypoint/). There is also a
-[C++](https://github.com/mbari-org/mbari_wec_template_cpp) version of the template template repository.
+[C++](https://github.com/mbari-org/mbari_wec_template_cpp) version of the template repository.
 
 Please also see [buoy_msgs/buoy_api_py](https://github.com/osrf/buoy_msgs/tree/main/buoy_api_py)
 for controller [examples](https://github.com/osrf/buoy_msgs/tree/main/buoy_api_py/buoy_api/examples)
