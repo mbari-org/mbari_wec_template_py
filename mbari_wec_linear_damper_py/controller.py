@@ -44,7 +44,7 @@ class ControlPolicy(object):
 class Controller(Interface):
 
     def __init__(self):
-        super().__init__('controller')
+        super().__init__('linear_damper')
 
         self.policy = ControlPolicy()
         self.set_params()

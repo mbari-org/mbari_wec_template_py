@@ -19,7 +19,7 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 
 
-package_name = 'mbari_wec_template_py'
+package_name = 'mbari_wec_linear_damper_py'
 
 def generate_launch_description():
     ld = LaunchDescription()
@@ -31,8 +31,8 @@ def generate_launch_description():
 
     node = Node(
         package=package_name,
-        name='controller',
-        executable='controller',
+        name='linear_damper',
+        executable='linear_damper',
         parameters=[config]
     )
 

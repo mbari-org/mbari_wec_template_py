@@ -4,7 +4,7 @@ import os
 from setuptools import setup
 
 
-package_name = 'mbari_wec_template_py'
+package_name = 'mbari_wec_linear_damper_py'
 
 setup(
     name=package_name,
@@ -21,12 +21,12 @@ setup(
     zip_safe=True,
     maintainer='anderson',
     maintainer_email='anderson@mbari.org',
-    description='MBARI Power Buoy Controller Template (python)',
+    description='MBARI Power Buoy Linear Damper (python)',
     license='Apache 2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            f'controller = {package_name}.controller:main',
+            f'linear_damper = {package_name}.controller:main',
         ],
     },
 )
