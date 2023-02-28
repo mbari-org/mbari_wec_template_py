@@ -17,28 +17,49 @@
 from buoy_api import Interface
 import rclpy
 
+import numpy as np
+from scipy import interpolate
+
 
 class ControlPolicy(object):
 
     def __init__(self):
         # Define any parameter variables here
-        self.foo = 1.0
+        self.Torque_constant = 0.438  # N-m/Amps
+        self.N_Spec = np.array([0.0, 300.0, 600.0, 1000.0, 1700.0, 4400.0, 6790.0])  # RPM
+        self.Torque_Spec = np.array([0.0, 0.0, 0.8, 2.9, 5.6, 9.8, 16.6])  # N-m
 
         self.update_params()
 
     def update_params(self):
         '''Update dependent variables after reading in params'''
-        self.bar = 10.0 * self.foo
-
-        pass  # remove if there's anything to set above
+        self.I_Spec = self.Torque_Spec / self.Torque_constant  # Amps
+        self.windcurr_interp1d = interpolate.interp1d(self.N_Spec, self.I_Spec)
 
     # Modify function inputs as desired
-    def target(self, *args, **kwargs):
+    def target(self, rpm, scale_factor, retract_factor):
         '''Calculate target value from feedback inputs'''
+        N = abs(rpm)
+        if N >= self.N_Spec[-1]:
+            I = self.I_Spec[-1]  # noqa: E741
+        else:
+            I = self.windcurr_interp1d(N)  # noqa: E741
 
-        # secret sauce
+        I *= scale_factor  # noqa: E741
+        if rpm > 0.0:
+            I *= -retract_factor  # noqa: E741
 
-        return 0.0  # obviously, modify to return proper target value
+        return float(I)
+
+    def __str__(self):
+        return """PBTorqueControlPolicy:
+\tTorque_constant: {tc}
+\tN_Spec: {nspec}
+\tTorque_Spec: {tspec}
+\tI_Spec: {ispec}""".format(tc=self.Torque_constant,
+                            nspec=self.N_Spec,
+                            tspec=self.Torque_Spec,
+                            ispec=self.I_Spec)
 
 
 class Controller(Interface):
@@ -52,7 +73,7 @@ class Controller(Interface):
         # set packet rates from controllers here
         # controller defaults to publishing @ 10Hz
         # call these to set rate to 50Hz or provide argument for specific rate
-        # self.set_pc_pack_rate_param()  # set SC publish rate to 50Hz
+        self.set_pc_pack_rate_param()  # set SC publish rate to 50Hz
         # self.set_sc_pack_rate_param()  # set PC publish rate to 50Hz
 
     # To subscribe to any topic, simply define the specific callback, e.g. power_callback
@@ -74,50 +95,33 @@ class Controller(Interface):
     # self.send_pc_retract_command(retract_factor, blocking=False)
 
     # Delete any unused callback
-    def ahrs_callback(self, data):
-        '''Callback for '/ahrs_data' topic from XBowAHRS'''
-        # Update class variables, get control policy target, send commands, etc.
-        # target_value = self.policy.target(data)
-        pass  # remove if there's anything to do above
-
-    def battery_callback(self, data):
-        '''Callback for '/battery_data' topic from Battery Controller'''
-        # Update class variables, get control policy target, send commands, etc.
-        # target_value = self.policy.target(data)
-        pass  # remove if there's anything to do above
-
-    def spring_callback(self, data):
-        '''Callback for '/spring_data' topic from Spring Controller'''
-        # Update class variables, get control policy target, send commands, etc.
-        # target_value = self.policy.target(data)
-        pass  # remove if there's anything to do above
-
     def power_callback(self, data):
         '''Callback for '/power_data' topic from Power Controller'''
         # Update class variables, get control policy target, send commands, etc.
-        # target_value = self.policy.target(data)
-        pass  # remove if there's anything to do above
+        wind_curr = self.policy.target(data.rpm, data.scale, data.retract)
 
-    def trefoil_callback(self, data):
-        '''Callback for '/trefoil_data' topic from Trefoil Controller'''
-        # Update class variables, get control policy target, send commands, etc.
-        # target_value = self.policy.target(data)
-        pass  # remove if there's anything to do above
+        self.get_logger().info(f'WindingCurrent: f({data.rpm}, {data.scale}, {data.retract})' +
+                               f' = {wind_curr}')
 
-    def powerbuoy_callback(self, data):
-        '''Callback for '/powerbuoy_data' topic -- Aggregated data from all topics'''
-        # Update class variables, get control policy target, send commands, etc.
-        # target_value = self.policy.target(data)
-        pass  # remove if there's anything to do above
+        self.send_pc_wind_curr_command(wind_curr, blocking=False)
 
     def set_params(self):
         '''Use ROS2 declare_parameter and get_parameter to set policy params'''
-        self.declare_parameter('foo', self.policy.foo)
-        self.policy.foo = \
-            self.get_parameter('foo').get_parameter_value().double_value
+        self.declare_parameter('torque_constant', self.policy.Torque_constant)
+        self.policy.Torque_constant = \
+            self.get_parameter('torque_constant').get_parameter_value().double_value
+
+        self.declare_parameter('n_spec', self.policy.N_Spec.tolist())
+        self.policy.N_Spec = \
+            np.array(self.get_parameter('n_spec').get_parameter_value().double_array_value)
+
+        self.declare_parameter('torque_spec', self.policy.Torque_Spec.tolist())
+        self.policy.Torque_Spec = \
+            np.array(self.get_parameter('torque_spec').get_parameter_value().double_array_value)
 
         # recompute any dependent variables
         self.policy.update_params()
+        self.get_logger().info(str(self.policy))
 
 
 def main():
