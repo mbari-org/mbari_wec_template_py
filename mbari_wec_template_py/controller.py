@@ -27,14 +27,14 @@ class ControlPolicy(object):
         self.update_params()
 
     def update_params(self):
-        '''Update dependent variables after reading in params'''
+        """Update dependent variables after reading in params."""
         self.bar = 10.0 * self.foo
 
         pass  # remove if there's anything to set above
 
     # Modify function inputs as desired
-    def target(self, *args, **kwargs):
-        '''Calculate target value from feedback inputs'''
+    def target(self, *args, **kwargs):  # noqa: D202
+        """Calculate target value from feedback inputs."""
 
         # secret sauce
 
@@ -57,13 +57,12 @@ class Controller(Interface):
 
     # To subscribe to any topic, simply define the specific callback, e.g. power_callback
     # def power_callback(self, data):
-    #     '''Callback for '/power_data' topic from Power Controller'''
+    #     """Enables feedback of '/power_data' topic from Power Controller"""
     #     # get target value from control policy
     #     target_value = self.policy.target(data.rpm, data.scale, data.retract)
 
     #     # send a command, e.g. winding current
     #     self.send_pc_wind_curr_command(target_value, blocking=False)
-
 
     # Available commands to send within any callback:
     # self.send_pump_command(duration_mins, blocking=False)
@@ -74,44 +73,45 @@ class Controller(Interface):
     # self.send_pc_retract_command(retract_factor, blocking=False)
 
     # Delete any unused callback
+
     def ahrs_callback(self, data):
-        '''Callback for '/ahrs_data' topic from XBowAHRS'''
+        """Provide feedback of '/ahrs_data' topic from XBowAHRS."""
         # Update class variables, get control policy target, send commands, etc.
         # target_value = self.policy.target(data)
         pass  # remove if there's anything to do above
 
     def battery_callback(self, data):
-        '''Callback for '/battery_data' topic from Battery Controller'''
+        """Provide feedback of '/battery_data' topic from Battery Controller."""
         # Update class variables, get control policy target, send commands, etc.
         # target_value = self.policy.target(data)
         pass  # remove if there's anything to do above
 
     def spring_callback(self, data):
-        '''Callback for '/spring_data' topic from Spring Controller'''
+        """Provide feedback of '/spring_data' topic from Spring Controller."""
         # Update class variables, get control policy target, send commands, etc.
         # target_value = self.policy.target(data)
         pass  # remove if there's anything to do above
 
     def power_callback(self, data):
-        '''Callback for '/power_data' topic from Power Controller'''
+        """Provide feedback of '/power_data' topic from Power Controller."""
         # Update class variables, get control policy target, send commands, etc.
         # target_value = self.policy.target(data)
         pass  # remove if there's anything to do above
 
     def trefoil_callback(self, data):
-        '''Callback for '/trefoil_data' topic from Trefoil Controller'''
+        """Provide feedback of '/trefoil_data' topic from Trefoil Controller."""
         # Update class variables, get control policy target, send commands, etc.
         # target_value = self.policy.target(data)
         pass  # remove if there's anything to do above
 
     def powerbuoy_callback(self, data):
-        '''Callback for '/powerbuoy_data' topic -- Aggregated data from all topics'''
+        """Provide feedback of '/powerbuoy_data' topic -- Aggregated data from all topics."""
         # Update class variables, get control policy target, send commands, etc.
         # target_value = self.policy.target(data)
         pass  # remove if there's anything to do above
 
     def set_params(self):
-        '''Use ROS2 declare_parameter and get_parameter to set policy params'''
+        """Use ROS2 declare_parameter and get_parameter to set policy params."""
         self.declare_parameter('foo', self.policy.foo)
         self.policy.foo = \
             self.get_parameter('foo').get_parameter_value().double_value
