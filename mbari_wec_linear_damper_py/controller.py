@@ -22,10 +22,17 @@ from scipy import interpolate
 
 
 class ControlPolicy(object):
+    ''' Simple Linear Damper Control Policy
+        Implements a simple linear damper controller for the piston in the WEC
+        Power-Take-Off (PTO). Given motor RPM, outputs desired motor winding current (interpolated
+        from RPM->Torque lookup table) to resist piston velocity. Configurable gains
+        (scale/retract factor) are applied before output.
+        '''
 
     def __init__(self):
         # Define any parameter variables here
         self.Torque_constant = 0.438  # N-m/Amps
+        # Desired damping Torque vs RPM relationship
         self.N_Spec = np.array([0.0, 300.0, 600.0, 1000.0, 1700.0, 4400.0, 6790.0])  # RPM
         self.Torque_Spec = np.array([0.0, 0.0, 0.8, 2.9, 5.6, 9.8, 16.6])  # N-m
 
@@ -33,26 +40,29 @@ class ControlPolicy(object):
 
     def update_params(self):
         """Update dependent variables after reading in params."""
+        # Convert to Motor Winding Current vs RPM and generate interpolator for f(RPM) = I
         self.I_Spec = self.Torque_Spec / self.Torque_constant  # Amps
-        self.windcurr_interp1d = interpolate.interp1d(self.N_Spec, self.I_Spec)
+        self.windcurr_interp1d = interpolate.interp1d(self.N_Spec, self.I_Spec,
+                                                      fill_value=self.I_Spec[-1],
+                                                      bounds_error=False)
 
     # Modify function inputs as desired
     def target(self, rpm, scale_factor, retract_factor):
         """Calculate target value from feedback inputs."""
         N = abs(rpm)
-        if N >= self.N_Spec[-1]:
-            I = self.I_Spec[-1]  # noqa: E741
-        else:
-            I = self.windcurr_interp1d(N)  # noqa: E741
+        I = self.windcurr_interp1d(N)  # noqa: E741
 
+        # Apply damping gain
         I *= scale_factor  # noqa: E741
+
+        # Hysteresis due to gravity assist
         if rpm > 0.0:
             I *= -retract_factor  # noqa: E741
 
         return float(I)
 
     def __str__(self):
-        return """PBTorqueControlPolicy:
+        return """ControlPolicy:
 \tTorque_constant: {tc}
 \tN_Spec: {nspec}
 \tTorque_Spec: {tspec}
@@ -71,10 +81,9 @@ class Controller(Interface):
         self.set_params()
 
         # set packet rates from controllers here
-        # controller defaults to publishing @ 10Hz
+        # controller defaults to publishing feedback @ 10Hz
         # call these to set rate to 50Hz or provide argument for specific rate
-        self.set_pc_pack_rate_param()  # set SC publish rate to 50Hz
-        # self.set_sc_pack_rate_param()  # set PC publish rate to 50Hz
+        self.set_pc_pack_rate_param()  # set PC feedback publish rate to 50Hz
 
     # To subscribe to any topic, simply define the specific callback, e.g. power_callback
     # def power_callback(self, data):
@@ -98,8 +107,9 @@ class Controller(Interface):
         # Update class variables, get control policy target, send commands, etc.
         wind_curr = self.policy.target(data.rpm, data.scale, data.retract)
 
-        self.get_logger().info(f'WindingCurrent: f({data.rpm}, {data.scale}, {data.retract})' +
-                               f' = {wind_curr}')
+        self.get_logger().info('WindingCurrent:' +
+                               f' f({data.rpm:.02f}, {data.scale:.02f}, {data.retract:.02f})' +
+                               f' = {wind_curr:.02f}')
 
         self.send_pc_wind_curr_command(wind_curr, blocking=False)
 
