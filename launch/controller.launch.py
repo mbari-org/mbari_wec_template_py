@@ -21,6 +21,7 @@ from launch_ros.actions import Node
 
 package_name = 'mbari_wec_linear_damper_py'
 
+
 def generate_launch_description():
     ld = LaunchDescription()
     config = os.path.join(

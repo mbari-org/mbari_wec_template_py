@@ -32,13 +32,13 @@ class ControlPolicy(object):
         self.update_params()
 
     def update_params(self):
-        '''Update dependent variables after reading in params'''
+        """Update dependent variables after reading in params."""
         self.I_Spec = self.Torque_Spec / self.Torque_constant  # Amps
         self.windcurr_interp1d = interpolate.interp1d(self.N_Spec, self.I_Spec)
 
     # Modify function inputs as desired
     def target(self, rpm, scale_factor, retract_factor):
-        '''Calculate target value from feedback inputs'''
+        """Calculate target value from feedback inputs."""
         N = abs(rpm)
         if N >= self.N_Spec[-1]:
             I = self.I_Spec[-1]  # noqa: E741
@@ -78,13 +78,12 @@ class Controller(Interface):
 
     # To subscribe to any topic, simply define the specific callback, e.g. power_callback
     # def power_callback(self, data):
-    #     '''Callback for '/power_data' topic from Power Controller'''
+    #     """Enables feedback of '/power_data' topic from Power Controller"""
     #     # get target value from control policy
     #     target_value = self.policy.target(data.rpm, data.scale, data.retract)
 
     #     # send a command, e.g. winding current
     #     self.send_pc_wind_curr_command(target_value, blocking=False)
-
 
     # Available commands to send within any callback:
     # self.send_pump_command(duration_mins, blocking=False)
@@ -94,9 +93,8 @@ class Controller(Interface):
     # self.send_pc_scale_command(scale_factor, blocking=False)
     # self.send_pc_retract_command(retract_factor, blocking=False)
 
-    # Delete any unused callback
     def power_callback(self, data):
-        '''Callback for '/power_data' topic from Power Controller'''
+        """Provide feedback of '/power_data' topic from Power Controller."""
         # Update class variables, get control policy target, send commands, etc.
         wind_curr = self.policy.target(data.rpm, data.scale, data.retract)
 
@@ -106,7 +104,7 @@ class Controller(Interface):
         self.send_pc_wind_curr_command(wind_curr, blocking=False)
 
     def set_params(self):
-        '''Use ROS2 declare_parameter and get_parameter to set policy params'''
+        """Use ROS2 declare_parameter and get_parameter to set policy params"""
         self.declare_parameter('torque_constant', self.policy.Torque_constant)
         self.policy.Torque_constant = \
             self.get_parameter('torque_constant').get_parameter_value().double_value
