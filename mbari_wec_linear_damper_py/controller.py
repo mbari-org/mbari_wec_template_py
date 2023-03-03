@@ -22,12 +22,14 @@ from scipy import interpolate
 
 
 class ControlPolicy(object):
-    ''' Simple Linear Damper Control Policy
-        Implements a simple linear damper controller for the piston in the WEC
-        Power-Take-Off (PTO). Given motor RPM, outputs desired motor winding current (interpolated
-        from RPM->Torque lookup table) to resist piston velocity. Configurable gains
-        (scale/retract factor) are applied before output.
-        '''
+    """
+    Simple Linear Damper Control Policy.
+
+    Implements a simple linear damper controller for the piston in the WEC
+    Power-Take-Off (PTO). Given motor RPM, outputs desired motor winding current (interpolated
+    from RPM->Torque lookup table) to resist piston velocity. Configurable gains
+    (scale/retract factor) are applied before output.
+    """
 
     def __init__(self):
         # Define any parameter variables here
@@ -114,7 +116,7 @@ class Controller(Interface):
         self.send_pc_wind_curr_command(wind_curr, blocking=False)
 
     def set_params(self):
-        """Use ROS2 declare_parameter and get_parameter to set policy params"""
+        """Use ROS2 declare_parameter and get_parameter to set policy params."""
         self.declare_parameter('torque_constant', self.policy.Torque_constant)
         self.policy.Torque_constant = \
             self.get_parameter('torque_constant').get_parameter_value().double_value
