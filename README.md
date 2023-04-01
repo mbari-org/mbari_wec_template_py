@@ -1,14 +1,14 @@
 # mbari_wec_template_py
 Python template repo for external ROS2-enabled controller for MBARI's wave energy conversion buoy (sim or physical).
-Please see [buoy_entrypoint](https://github.com/osrf/buoy_entrypoint) and associated
-[documentation](https://osrf.github.io/buoy_entrypoint/). There is also a
+Please see [mbari_wec](https://github.com/osrf/mbari_wec) and associated
+[documentation](https://osrf.github.io/mbari_wec). There is also a
 [C++](https://github.com/mbari-org/mbari_wec_template_cpp) version of the template repository.
 
-Please also see [buoy_msgs/buoy_api_py](https://github.com/osrf/buoy_msgs/tree/main/buoy_api_py)
-for controller [examples](https://github.com/osrf/buoy_msgs/tree/main/buoy_api_py/buoy_api/examples)
+Please also see [mbari_wec_msgs/buoy_api_py](https://github.com/osrf/mbari_wec_msgs/tree/main/buoy_api_py)
+for controller [examples](https://github.com/osrf/mbari_wec_msgs/tree/main/buoy_api_py/buoy_api/examples)
 
 ## Tutorial
-There is a [tutorial](https://osrf.github.io/buoy_entrypoint/Tutorials/ROS2/PythonTemplate/) for a quick start
+There is a [tutorial](https://osrf.github.io/mbari_wec/Tutorials/ROS2/PythonTemplate/) for a quick start
 using this template. You may also refer to GitHub's
 [template documentation](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
 for general help with template repositories.
@@ -146,5 +146,5 @@ You may also send commands from within the `Controller` class:
 
 ## Example
 
-(Coming Soon) An example using this interface can be found in the tutorial:
-[Linear Damper Example (Python)](https://osrf.github.io/buoy_entrypoint/Tutorials/ROS2/PythonLinearDamperExample.md)
+An example using this interface can be found in the tutorial:
+[Linear Damper Example (Python)](https://osrf.github.io/mbari_wec/Tutorials/ROS2/PythonLinearDamperExample.md)
