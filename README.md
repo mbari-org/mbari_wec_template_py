@@ -4,8 +4,8 @@ Please see [mbari_wec](https://github.com/osrf/mbari_wec) and associated
 [documentation](https://osrf.github.io/mbari_wec). There is also a
 [C++](https://github.com/mbari-org/mbari_wec_template_cpp) version of the template repository.
 
-Please also see [mbari_wec_msgs/buoy_api_py](https://github.com/osrf/mbari_wec_msgs/tree/main/buoy_api_py)
-for controller [examples](https://github.com/osrf/mbari_wec_msgs/tree/main/buoy_api_py/buoy_api/examples)
+Please also see [mbari_wec_utils/buoy_api_py](https://github.com/osrf/mbari_wec_utils/tree/main/buoy_api_py)
+for controller [examples](https://github.com/osrf/mbari_wec_utils/tree/main/buoy_api_py/buoy_api/examples)
 
 ## Tutorial
 There is a [tutorial](https://osrf.github.io/mbari_wec/Tutorials/ROS2/PythonTemplate/) for a quick start
