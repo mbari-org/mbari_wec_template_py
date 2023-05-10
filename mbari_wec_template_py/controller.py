@@ -55,6 +55,11 @@ class Controller(Interface):
         # self.set_pc_pack_rate_param()  # set PC publish rate to 50Hz
         # self.set_sc_pack_rate_param()  # set SC publish rate to 50Hz
 
+        # Use this to set node clock to use sim time from /clock (from gazebo sim time)
+        # Access node clock via self.get_clock() or other various
+        # time-related functions of rclpy.Node
+        # self.use_sim_time()
+
     # To subscribe to any topic, simply define the specific callback, e.g. power_callback
     # def power_callback(self, data):
     #     """Enables feedback of '/power_data' topic from Power Controller"""
