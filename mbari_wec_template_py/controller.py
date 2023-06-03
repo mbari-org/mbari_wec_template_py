@@ -52,8 +52,8 @@ class Controller(Interface):
         # set packet rates from controllers here
         # controller defaults to publishing @ 10Hz
         # call these to set rate to 50Hz or provide argument for specific rate
-        # self.set_pc_pack_rate_param()  # set PC publish rate to 50Hz
-        # self.set_sc_pack_rate_param()  # set SC publish rate to 50Hz
+        # self.set_pc_pack_rate(blocking=False)  # set PC publish rate to 50Hz
+        # self.set_sc_pack_rate(blocking=False)  # set SC publish rate to 50Hz
 
         # Use this to set node clock to use sim time from /clock (from gazebo sim time)
         # Access node clock via self.get_clock() or other various
