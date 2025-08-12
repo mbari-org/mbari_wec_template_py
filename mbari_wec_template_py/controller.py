@@ -115,6 +115,12 @@ class Controller(Interface):
         # target_value = self.policy.target(data)
         pass  # remove if there's anything to do above
 
+    def latent_callback(self, data):
+        """Provide feedback of '/latent_data' topic -- SIM ONLY values (e.g. losses, wave data)."""
+        # Potentially evaluate controller performance against sim only (latent data NOT AVAILABLE
+        # in physical buoy)
+        pass  # remove if there's anything to do above
+
     def set_params(self):
         """Use ROS2 declare_parameter and get_parameter to set policy params."""
         self.declare_parameter('foo', self.policy.foo)
@@ -128,7 +134,7 @@ class Controller(Interface):
 def main():
     rclpy.init()
     controller = Controller()
-    rclpy.spin(controller)
+    controller.spin()
     rclpy.shutdown()
 
 

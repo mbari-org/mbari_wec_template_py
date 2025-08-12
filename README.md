@@ -1,10 +1,14 @@
 # mbari_wec_template_py
 Python template repo for external ROS2-enabled controller for MBARI's wave energy conversion buoy (sim or physical).
+
 Please see [mbari_wec](https://github.com/osrf/mbari_wec) and associated
 [documentation](https://osrf.github.io/mbari_wec). There is also a
 [C++](https://github.com/mbari-org/mbari_wec_template_cpp) version of the template repository.
 
-Please also see [mbari_wec_utils/buoy_api_py](https://github.com/osrf/mbari_wec_utils/tree/main/buoy_api_py)
+Please also see the
+[linear_damper_example](https://github.com/mbari-org/mbari_wec_template_py/tree/linear_damper_example)
+branch of this template repository or
+[mbari_wec_utils/buoy_api_py](https://github.com/osrf/mbari_wec_utils/tree/main/buoy_api_py)
 for controller [examples](https://github.com/osrf/mbari_wec_utils/tree/main/buoy_api_py/buoy_api/examples)
 
 ## Tutorial
@@ -20,10 +24,11 @@ button with the text `Use this template` and select `Create a new repository`
 2. Next, set up the repository like you would any new GitHub repository choosing the owner,
 repository name, public/private, etc.
 
-3. Now that your new repository is set up, clone it to your local machine, make a branch, etc.  
+3. Now that your new repository is set up, clone it to your ROS 2 workspace on your local machine,
+make a branch, etc.  
    `$ git clone https://github.com/<owner>/<repo_name>.git`
 
-You should now have a Python ROS 2 package with the following structure:
+You should now have a Python3 ROS 2 package with the following structure in your ROS 2 workspace:
 
 ```
 <repo_name>
