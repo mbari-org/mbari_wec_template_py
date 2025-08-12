@@ -137,7 +137,7 @@ class Controller(Interface):
 def main():
     rclpy.init()
     controller = Controller()
-    rclpy.spin(controller)
+    controller.spin()
     rclpy.shutdown()
 
 
